@@ -1,23 +1,22 @@
 # PDF Tag Simple
 <img width="822" height="487" alt="Image" src="https://github.com/user-attachments/assets/8ae4f8b1-55fd-4be6-b14b-88670310449d" />
-
 I have too many PDFs. All sitting on a HDD.
 
 You know the feeling — open a folder with a few thousand files and wait a full minute just for Explorer to finish loading. Then you still can't find what you're looking for.
 
 So I built this.
 
-Getting started
+## Getting started
+
+1. Click **Add Path** — select your PDF folder
+2. Click **Update DB** — scans the folder and renders thumbnails (first time is slow, see benchmarks below)
+3. Done — browse, search, and tag
+
+Every time you add new files to the folder, click **Update DB** again to pick them up.
+
+---
 
 
-Click Add Path — select your PDF folder
-Click Update DB — scans the folder and renders thumbnails (first time is slow, see benchmarks below)
-Done — browse, search, and tag
-
-
-Every time you add new files to the folder, click Update DB again to pick them up.
-
-## How it works
 
 **Scan once. Browse forever.**
 
