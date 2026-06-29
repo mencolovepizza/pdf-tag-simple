@@ -1,0 +1,512 @@
+/* ================================================
+   PDF TAG SIMPLE — Design System
+   
+   Sections:
+   1. CSS Variables (Light + Dark)
+   2. Reset & Base
+   3. Layout (App Shell, Sidebar, Main)
+   4. Toolbar & Buttons
+   5. Inputs & Selects
+   6. Sidebar Components (folders, tags, trash)
+   7. Asset Grid & Cards
+   8. Dark Mode Toggle
+   9. Scrollbars
+   10. Responsive
+================================================ */
+
+/* ------------------------------------------------
+   1. CSS VARIABLES
+------------------------------------------------ */
+:root {
+  /* Font */
+  font-family: Inter, "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  /* Colors — Light */
+  --bg:             #f4f6f9;
+  --panel:          #ffffff;
+  --panel-soft:     #f8fafc;
+  --border:         #e2e8f0;
+  --border-strong:  #cbd5e1;
+  --text:           #1e293b;
+  --text-secondary: #64748b;
+  --primary:        #3b82f6;
+  --primary-hover:  #2563eb;
+  --primary-soft:   #eff6ff;
+  --hover:          #f1f5f9;
+  --active-bg:      #eff6ff;
+  --active-text:    #2563eb;
+  --danger:         #ef4444;
+  --danger-soft:    #fff5f5;
+  --success:        #22c55e;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.08);
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.06);
+
+  /* Radius */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+
+  /* Transition */
+  --transition: 0.15s ease;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg:             #0f172a;
+  --panel:          #1e293b;
+  --panel-soft:     #162032;
+  --border:         #334155;
+  --border-strong:  #475569;
+  --text:           #e2e8f0;
+  --text-secondary: #94a3b8;
+  --primary:        #60a5fa;
+  --primary-hover:  #3b82f6;
+  --primary-soft:   #1e3a5f;
+  --hover:          #263548;
+  --active-bg:      #1e3a5f;
+  --active-text:    #60a5fa;
+  --danger:         #f87171;
+  --danger-soft:    #2d1515;
+  --success:        #4ade80;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.4);
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ------------------------------------------------
+   2. RESET & BASE
+------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: var(--primary); text-decoration: none; }
+
+/* ------------------------------------------------
+   3. LAYOUT
+------------------------------------------------ */
+.app-shell {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 5;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.sidebar-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Main panel */
+.main-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.main-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  transition: background var(--transition);
+}
+
+.grid-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px 20px 28px;
+}
+
+/* ------------------------------------------------
+   4. TOOLBAR & BUTTONS
+------------------------------------------------ */
+
+/* Brand */
+.brand-block {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.status-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Section headers */
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  padding: 0 4px;
+}
+
+/* Toolbar grid buttons */
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.toolbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.toolbar button:hover {
+  background: var(--hover);
+  border-color: var(--border-strong);
+}
+
+/* Primary button */
+.btn-primary {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover) !important;
+  border-color: var(--primary-hover) !important;
+}
+
+/* Danger button */
+.btn-danger {
+  background: var(--danger-soft) !important;
+  color: var(--danger) !important;
+  border-color: var(--danger) !important;
+}
+
+/* Full width button (span 2 cols) */
+.toolbar button.full-width {
+  grid-column: span 2;
+}
+
+/* Main toolbar controls */
+.main-toolbar button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.main-toolbar button:hover {
+  background: var(--hover);
+  border-color: var(--border-strong);
+}
+
+/* Dark mode toggle button */
+#btn-theme-toggle {
+  width: 34px;
+  height: 34px;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------
+   5. INPUTS & SELECTS
+------------------------------------------------ */
+#search-input,
+#tag-search-input,
+#sort-select {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  font-size: 13px;
+}
+
+#search-input { flex: 1; min-width: 180px; }
+#tag-search-input { width: 100%; }
+#sort-select { background: var(--panel); }
+
+#search-input:focus,
+#tag-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ------------------------------------------------
+   6. SIDEBAR COMPONENTS
+------------------------------------------------ */
+
+/* Folder items */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  transition: background var(--transition), color var(--transition);
+  user-select: none;
+  gap: 8px;
+}
+
+.sidebar-item:hover {
+  background: var(--hover) !important;
+}
+
+.sidebar-item.active {
+  background: var(--active-bg) !important;
+  color: var(--active-text) !important;
+  font-weight: 600 !important;
+}
+
+.sidebar-count {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--hover);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.sidebar-item.active .sidebar-count {
+  background: var(--primary-soft);
+  color: var(--active-text);
+}
+
+/* Tag chips in sidebar */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+  user-select: none;
+}
+
+.tag-chip:hover {
+  background: var(--hover);
+  border-color: var(--border-strong);
+}
+
+.tag-chip.selected {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Trash button */
+#btn-trash-view {
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--text-secondary);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition);
+}
+
+#btn-trash-view:not(:disabled):hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+#btn-trash-view:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ------------------------------------------------
+   7. ASSET GRID & CARDS
+------------------------------------------------ */
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+  align-content: flex-start;
+}
+
+/* Card — inline styles từ JS sẽ dần migrate sang đây */
+/* Hiện tại dùng class .book-card khi refactor JS */
+.book-card {
+  background: var(--panel);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 10px;
+  cursor: pointer;
+  transition: box-shadow var(--transition), transform var(--transition);
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.book-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.book-card.selected {
+  box-shadow: 0 0 0 2px var(--primary), var(--shadow-card);
+  background: var(--active-bg);
+}
+
+/* Lazy load sentinel */
+.grid-sentinel {
+  width: 100%;
+  height: 50px;
+  grid-column: 1 / -1;
+}
+
+/* Context menu */
+.context-menu {
+  z-index: 10000;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 4px;
+  min-width: 200px;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------
+   8. DARK MODE TOGGLE
+------------------------------------------------ */
+[data-theme="dark"] #search-input,
+[data-theme="dark"] #tag-search-input,
+[data-theme="dark"] #sort-select,
+[data-theme="dark"] .toolbar button,
+[data-theme="dark"] .main-toolbar button {
+  background: var(--panel-soft);
+}
+
+[data-theme="dark"] .main-toolbar {
+  border-bottom-color: var(--border);
+}
+
+/* ------------------------------------------------
+   9. SCROLLBARS
+------------------------------------------------ */
+.sidebar-inner::-webkit-scrollbar,
+.grid-scroll-area::-webkit-scrollbar { width: 6px; }
+
+.sidebar-inner::-webkit-scrollbar-thumb,
+.grid-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+.sidebar-inner::-webkit-scrollbar-track,
+.grid-scroll-area::-webkit-scrollbar-track { background: transparent; }
+
+/* ------------------------------------------------
+   10. RESPONSIVE
+------------------------------------------------ */
+@media (max-width: 900px) {
+  .sidebar { width: 240px; min-width: 240px; max-width: 240px; }
+  .main-toolbar { padding: 10px 14px; }
+  .grid-scroll-area { padding: 14px 16px 24px; }
+}
+
+@media (max-width: 720px) {
+  .app-shell { flex-direction: column; }
+  .sidebar { width: 100%; min-width: 100%; max-width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .sidebar-inner { max-height: 40vh; }
+  .main-panel { height: auto; }
+  .main-toolbar { flex-wrap: wrap; }
+  .toolbar { grid-template-columns: 1fr 1fr; }
+}

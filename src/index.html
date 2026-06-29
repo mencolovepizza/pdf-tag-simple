@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Tag Simple</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!--
+    LAYOUT
+    ├── <aside.sidebar>
+    │     ├── .brand-block        — logo + status
+    │     ├── .toolbar            — action buttons (2 col grid)
+    │     ├── #sidebar-folders    — f_sidebar.js
+    │     ├── #tag-list-container — f_tags.js
+    │     └── #btn-trash-view     — main.js
+    └── <main.main-panel>
+          ├── .main-toolbar       — search + bulk actions + sort + dark toggle
+          └── .grid-scroll-area
+                └── #asset-grid  — f_grid.js
+  -->
+  <div class="app-shell">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+
+        <!-- Brand + Status -->
+        <div class="brand-block">
+          <div class="brand-title">
+            <!-- Logo SVG — thay bằng file svg của bạn sau -->
+            <img src="./assets/logo.svg" width="28" height="28" style="flex-shrink:0;" />
+            PDF Tag Simple
+          </div>
+          <!-- Status — ghi bởi main.js → setStatus() -->
+          <div id="txt-status" class="status-text">Ready.</div>
+        </div>
+
+        <!-- Toolbar buttons — sự kiện gắn trong main.js -->
+        <div class="sidebar-section">
+          <div class="toolbar">
+            <button id="btn-select-folder">
+              <!-- icon: folder-plus -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+              Add Path
+            </button>
+            <button id="btn-update-db">
+              <!-- icon: refresh -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              Update DB
+            </button>
+            <button id="btn-export">
+              <!-- icon: upload -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Export
+            </button>
+            <button id="btn-import">
+              <!-- icon: download -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Import
+            </button>
+            <button id="btn-ai-autotag">
+              <!-- icon: sparkles -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L9.5 9.5 3 12l6.5 2.5L12 21l2.5-6.5L21 12l-6.5-2.5z"/></svg>
+              AI Auto-Tag
+            </button>
+            <button id="btn-ai-settings">
+              <!-- icon: settings -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              AI Settings
+            </button>
+            <button id="btn-find-duplicates" class="full-width">
+              <!-- icon: copy -->
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Find Duplicates
+            </button>
+          </div>
+        </div>
+
+        <!-- Folder list — render bởi f_sidebar.js -->
+        <div class="sidebar-section">
+          <div class="section-title">Folders</div>
+          <div id="sidebar-folders"></div>
+        </div>
+
+        <!-- Tag filter — render bởi f_tags.js -->
+        <div class="sidebar-section">
+          <div class="section-title">Filter by Tags</div>
+          <input id="tag-search-input" placeholder="Search tags..." style="margin-bottom:8px;" />
+          <div id="tag-list-container" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+        </div>
+
+        <!-- Trash bin -->
+        <div class="sidebar-section">
+          <div class="section-title">Trash</div>
+          <button id="btn-trash-view" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Trash (<span id="txt-trash-count">0</span>)
+          </button>
+        </div>
+
+      </div>
+    </aside>
+    <!-- =================== END SIDEBAR =================== -->
+
+    <!-- ====================== MAIN ======================= -->
+    <main class="main-panel">
+
+      <!-- Top toolbar -->
+      <div class="main-toolbar">
+
+        <!-- Search -->
+        <input id="search-input" placeholder="Search books..." style="flex:1; min-width:180px;" />
+
+        <!-- Bulk actions — ẩn mặc định, main.js điều khiển -->
+        <span id="txt-selection-count" style="font-size:12px; color:var(--text-secondary); white-space:nowrap;">0 selected</span>
+        <button id="btn-select-all">Select all</button>
+        <button id="btn-bulk-hide" style="display:none;">Hide</button>
+        <button id="btn-bulk-restore" style="display:none;">Restore</button>
+        <button id="btn-clear-selection" style="display:none;">Clear</button>
+
+        <!-- Sort -->
+        <select id="sort-select">
+          <option value="name-asc">Name A → Z</option>
+          <option value="name-desc">Name Z → A</option>
+          <option value="date-desc">Newest first</option>
+          <option value="date-asc">Oldest first</option>
+        </select>
+
+        <!-- Dark mode toggle — main.js gắn event -->
+        <button id="btn-theme-toggle" title="Toggle dark mode">🌙</button>
+
+      </div>
+
+      <!-- Grid -->
+      <div class="grid-scroll-area">
+        <div id="asset-grid" class="asset-grid"></div>
+      </div>
+
+    </main>
+    <!-- ==================== END MAIN ==================== -->
+
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
