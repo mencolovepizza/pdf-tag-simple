@@ -7,6 +7,16 @@ You know the feeling — open a folder with a few thousand files and wait a full
 
 So I built this.
 
+Getting started
+
+
+Click Add Path — select your PDF folder
+Click Update DB — scans the folder and renders thumbnails (first time is slow, see benchmarks below)
+Done — browse, search, and tag
+
+
+Every time you add new files to the folder, click Update DB again to pick them up.
+
 ## How it works
 
 **Scan once. Browse forever.**
